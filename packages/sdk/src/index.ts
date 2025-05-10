@@ -1,10 +1,11 @@
 import { loader } from "./loader";
-import { doPayment, isInitialized } from "./core";
+import { requestPayment } from "./requestPayment";
+import type { PaymentReqBody } from "./requestPayment";
 
 const PaymentSDK = {
   loader,
-  doPayment,
-  isInitialized,
+  requestPayment,
 };
 
 export default PaymentSDK;
+export type { PaymentReqBody };
