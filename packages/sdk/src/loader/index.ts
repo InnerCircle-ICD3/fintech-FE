@@ -1,18 +1,22 @@
-import type { LoaderParams, ValidationResponse } from "./type";
 import { initialize } from "../core";
 
-export async function loader({ key }: LoaderParams): Promise<void> {
+export interface ValidationResponse {
+  valid: boolean;
+  merchantName?: string;
+}
+
+export async function loader({ key }: { key: string }): Promise<void> {
   if (!key) throw new Error("[PaymentSDK] key is required");
 
-  const res = await fetch("https://passion-pay-api.com/validate-sdk", {
+  const response = await fetch("https://passion-pay-api.com/validate-sdk", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ key }),
   });
 
-  const json: ValidationResponse = await res.json();
+  const json: ValidationResponse = await response.json();
 
-  if (!res.ok || !json.valid) {
+  if (!response.ok || !json.valid) {
     throw new Error("[PaymentSDK] Invalid SDK key");
   }
 

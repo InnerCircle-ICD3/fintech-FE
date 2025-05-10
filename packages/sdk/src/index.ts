@@ -1,10 +1,2 @@
-import { loader } from "./loader";
-import { doPayment, isInitialized } from "./core";
-
-const PaymentSDK = {
-  loader,
-  doPayment,
-  isInitialized,
-};
-
-export default PaymentSDK;
+export { loader } from "./loader";
+export { requestPayment } from "./requestPayment";
