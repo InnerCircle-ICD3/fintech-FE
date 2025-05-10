@@ -67,17 +67,11 @@ const createModalElements = ({ onClose }: CreateModalElements) => {
   return { modal, content };
 };
 
-interface ShowQRCode {
-  qrCodeUrl: string;
-  onClose: () => void;
-}
-
-export const showQRCode = ({ qrCodeUrl, onClose }: ShowQRCode): void => {
+export function showQRCode(qrCodeUrl: string): void {
   const cleanup = () => {
     if (modal.parentNode) {
       modal.parentNode.removeChild(modal);
     }
-    onClose();
   };
 
   const { modal, content } = createModalElements({ onClose: cleanup });
@@ -98,4 +92,4 @@ export const showQRCode = ({ qrCodeUrl, onClose }: ShowQRCode): void => {
 
   // 모달 표시
   document.body.appendChild(modal);
-};
+}

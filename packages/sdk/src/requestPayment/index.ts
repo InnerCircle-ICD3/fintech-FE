@@ -1,33 +1,17 @@
-export interface PaymentReqBody {
-  amount: number;
-  merchant_order_id: string;
-  merchant_id: string;
-}
+import { showQRCode } from "../components/qrCodeModal";
+import { generateQR } from "./generateQR";
+import { getTransactionToken } from "./getTransactionToken";
+import type { PaymentReqBody } from "./type";
 
-export interface PaymentResData {
-  transaction_token: string;
-  expires_at: string;
-}
+export async function requestPayment(reqBody: PaymentReqBody) {
+  try {
+    const tokenResponse = await getTransactionToken(reqBody);
 
-export const requestPayment = async (
-  params: PaymentReqBody
-): Promise<PaymentResData> => {
-  const response = await fetch(
-    `https://passion-pay-api.com/transactions/initiate`,
-    {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(params),
-    }
-  );
+    const qrCodeUrl = await generateQR(tokenResponse.transaction_token);
 
-  if (!response.ok) {
-    throw new Error("Failed to get transaction token");
-  } else {
-    // TODO : QR 생성 및 표시
+    showQRCode(qrCodeUrl);
+  } catch (error) {
+    console.error("Payment process failed:", error);
+    throw error;
   }
-
-  return response.json();
-};
+}
