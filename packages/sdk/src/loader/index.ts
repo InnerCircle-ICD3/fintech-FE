@@ -1,4 +1,4 @@
-import { initialize } from "../core";
+// import { initialize } from "../core";
 
 export interface ValidationResponse {
   valid: boolean;
@@ -8,7 +8,8 @@ export interface ValidationResponse {
 export async function loader({ key }: { key: string }): Promise<void> {
   if (!key) throw new Error("[PaymentSDK] key is required");
 
-  const response = await fetch("https://passion-pay-api.com/validate-sdk", {
+  console.log(`sdk key: ${key}`);
+  /* const response = await fetch("https://passion-pay-api.com/validate-sdk", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ key }),
@@ -21,5 +22,5 @@ export async function loader({ key }: { key: string }): Promise<void> {
   }
 
   initialize(key);
-  console.log(`[PaymentSDK] Initialized for merchant: ${json.merchantName}`);
+  console.log(`[PaymentSDK] Initialized for merchant: ${json.merchantName}`); */
 }

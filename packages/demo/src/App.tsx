@@ -1,8 +1,22 @@
+import { useEffect } from "react";
+
 function App() {
+  const handlePaymentClick = () => {};
+
+  useEffect(() => {
+    // @ts-expect-error - SDK는 script 태그로 로드됨
+    const sdk = window.PaymentSDK();
+    sdk.loader({ key: "test_sdk_key_123" });
+  }, []);
+
   return (
     <div className="min-h-screen bg-gray-50 py-10">
       <div className="container mx-auto px-4 max-w-md">
         <div className="bg-white rounded-2xl shadow-lg p-6 space-y-6">
+          <h1 className="text-2xl font-bold text-center text-gray-900">
+            결제 SDK 데모
+          </h1>
+
           {/* 결제수단 섹션 */}
           <div className="space-y-2">
             <div className="text-sm font-medium text-gray-600">결제수단</div>
@@ -23,7 +37,10 @@ function App() {
           </div>
 
           {/* 결제 버튼 */}
-          <button className="w-full py-4 bg-orange-500 hover:bg-orange-600 text-white font-bold rounded-xl transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:ring-offset-2">
+          <button
+            onClick={handlePaymentClick}
+            className="w-full py-4 bg-orange-500 hover:bg-orange-600 text-white font-bold rounded-xl transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:ring-offset-2"
+          >
             1,000원 결제하기
           </button>
 

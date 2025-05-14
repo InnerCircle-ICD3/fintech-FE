@@ -44,9 +44,9 @@
     "react-hooks/exhaustive-deps": "warn",
 
     // General
-    "no-console": ["warn", { "allow": ["warn", "error"] }],
+    "no-console": ["warn", { "allow": ["log", "warn", "error"] }],
     "no-unused-vars": "off", // TypeScript rule을 사용
-    "quotes": ["error", "single"],
+    "quotes": ["error", "double"],
     "semi": ["error", "always"],
 
     // Tailwind
