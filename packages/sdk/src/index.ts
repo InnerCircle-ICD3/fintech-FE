@@ -1,24 +1,21 @@
 import { loader } from "./loader";
 import { requestPayment } from "./requestPayment";
-
-interface PaymentSDKInstance {
-  requestPayment: (reqBody: {
-    amount: number;
-    merchant_order_id: string;
-    merchant_id: string;
-  }) => Promise<void>;
-}
+import type { PassionPaySDKInstance } from "./types";
 
 async function PassionPaySDK(
   clientKey: string
-): Promise<PaymentSDKInstance | null> {
+): Promise<PassionPaySDKInstance | null> {
   if (!clientKey) {
     throw new Error("[PassionPaySDK] clientKey is required");
   }
 
   try {
     // Validate SDK key
-    await loader(clientKey);
+    const isValid = await loader(clientKey);
+
+    if (!isValid) {
+      throw new Error("[PassionPaySDK] Invalid SDK key");
+    }
 
     // Return SDK instance only if validation succeeds
     return {
@@ -32,7 +29,11 @@ async function PassionPaySDK(
 
 // Register global object for CDN usage
 if (typeof window !== "undefined") {
-  (window as any).PassionPaySDK = PassionPaySDK;
+  Object.defineProperty(window, "PassionPaySDK", {
+    value: PassionPaySDK,
+    writable: false,
+    configurable: false,
+  });
 }
 
 export default PassionPaySDK;

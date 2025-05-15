@@ -1,6 +1,10 @@
+import { useEffect, useState } from "react";
+
 function App() {
   const sdkKey = "test_client_key_123";
-  const passionPay = PassionPaySDK(sdkKey);
+  const [passionPay, setPassionPay] = useState<PassionPaySDKInstance | null>(
+    null
+  );
 
   const amount = 1000;
   const merchantOrderId = `order_${Date.now()}`;
@@ -19,6 +23,14 @@ function App() {
       console.error("Payment failed:", error);
     }
   };
+
+  useEffect(() => {
+    async function initSDK() {
+      const sdk = await PassionPaySDK(sdkKey);
+      setPassionPay(sdk);
+    }
+    initSDK();
+  }, [sdkKey]);
 
   return (
     <div className="min-h-screen bg-gray-50 py-10">
