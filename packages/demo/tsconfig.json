@@ -20,6 +20,9 @@
     "noUnusedParameters": true,
     "noFallthroughCasesInSwitch": true,
 
+    /* SDK Types */
+    "types": ["../sdk/src/types"],
+    "baseUrl": ".",
     "paths": {
       "@sdk": ["../sdk/src/index.ts"]
     }

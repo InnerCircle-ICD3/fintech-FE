@@ -5,10 +5,8 @@ export interface ValidationResponse {
   merchantName?: string;
 }
 
-export async function loader({ key }: { key: string }): Promise<void> {
-  if (!key) throw new Error("[PaymentSDK] key is required");
-
-  console.log(`sdk key: ${key}`);
+export async function loader(sdkKey: string): Promise<void> {
+  console.log(`sdk key: ${sdkKey}`);
   /* const response = await fetch("https://passion-pay-api.com/validate-sdk", {
     method: "POST",
     headers: { "Content-Type": "application/json" },

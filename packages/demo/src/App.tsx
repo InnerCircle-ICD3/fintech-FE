@@ -1,13 +1,24 @@
-import { useEffect } from "react";
-
 function App() {
-  const handlePaymentClick = () => {};
+  const sdkKey = "test_client_key_123";
+  const passionPay = PassionPaySDK(sdkKey);
 
-  useEffect(() => {
-    // @ts-expect-error - SDK는 script 태그로 로드됨
-    const sdk = window.PaymentSDK();
-    sdk.loader({ key: "test_sdk_key_123" });
-  }, []);
+  const amount = 1000;
+  const merchantOrderId = `order_${Date.now()}`;
+  const merchantId = "test_merchant";
+
+  const handlePaymentClick = async () => {
+    if (!passionPay) return;
+
+    try {
+      await passionPay.requestPayment({
+        amount,
+        merchant_order_id: merchantOrderId,
+        merchant_id: merchantId,
+      });
+    } catch (error) {
+      console.error("Payment failed:", error);
+    }
+  };
 
   return (
     <div className="min-h-screen bg-gray-50 py-10">
@@ -32,16 +43,16 @@ function App() {
           <div className="rounded-xl bg-gray-50 p-4">
             <div className="flex items-center justify-between">
               <div className="text-gray-600">총 결제 금액</div>
-              <div className="text-xl font-bold text-gray-900">1,000원</div>
+              <div className="text-xl font-bold text-gray-900">{amount}원</div>
             </div>
           </div>
 
           {/* 결제 버튼 */}
           <button
             onClick={handlePaymentClick}
-            className="relative w-full rounded-xl bg-orange-500 py-4 font-bold text-white transition-colors duration-200 hover:bg-orange-600 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:ring-offset-2"
+            className="w-full rounded-xl bg-orange-500 py-4 font-bold text-white transition-colors duration-200 hover:bg-orange-600 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:ring-offset-2"
           >
-            1,000원 결제하기
+            {amount}원 결제하기
           </button>
 
           {/* 안내 문구 */}

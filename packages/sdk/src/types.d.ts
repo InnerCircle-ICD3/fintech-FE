@@ -1,7 +1,13 @@
+export interface PassionPaySDKInstance {
+  requestPayment: (reqBody: {
+    amount: number;
+    merchant_order_id: string;
+    merchant_id: string;
+  }) => Promise<void>;
+}
+
 declare global {
-  interface Window {
-    PaymentSDK: () => import("./index").PaymentSDK;
-  }
+  const PassionPaySDK: (clientKey: string) => PassionPaySDKInstance;
 }
 
 export {};
