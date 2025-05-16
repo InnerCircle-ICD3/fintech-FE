@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
       - name: fintech-frontend
-        image: nullplusnull/fintech-frontend:${VERSION}
+        image: ${DOCKER_REGISTRY}/fintech-frontend:${VERSION}
         ports:
         - containerPort: 80
         resources:

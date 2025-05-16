@@ -24,6 +24,7 @@ pipeline {
                     if (params.DOCKER_REGISTRY == '') {
                         error "DOCKER_REGISTRY 파라미터가 설정되지 않았습니다. 'Build with Parameters'를 사용하여 값을 입력해주세요."
                     }
+                    env.DOCKER_REGISTRY = params.DOCKER_REGISTRY
                 }
             }
         }
@@ -51,8 +52,8 @@ pipeline {
         
         stage('Build Docker Image') {
             steps {
-                sh 'docker build -t ${params.DOCKER_REGISTRY}/$IMAGE_NAME:$BUILD_NUMBER . || echo "Docker 이미지 빌드 건너뜀"'
-                sh 'docker tag ${params.DOCKER_REGISTRY}/$IMAGE_NAME:$BUILD_NUMBER ${params.DOCKER_REGISTRY}/$IMAGE_NAME:latest || echo "Docker 태그 건너뜀"'
+                sh "docker build -t ${env.DOCKER_REGISTRY}/${IMAGE_NAME}:${BUILD_NUMBER} . || echo \"Docker 이미지 빌드 건너뜀\""
+                sh "docker tag ${env.DOCKER_REGISTRY}/${IMAGE_NAME}:${BUILD_NUMBER} ${env.DOCKER_REGISTRY}/${IMAGE_NAME}:latest || echo \"Docker 태그 건너뜀\""
             }
         }
         
@@ -61,8 +62,8 @@ pipeline {
                 withCredentials([usernamePassword(credentialsId: 'dockerhub-creds', usernameVariable: 'DOCKER_USERNAME', passwordVariable: 'DOCKER_PASSWORD')]) {
                     sh '''
                     echo $DOCKER_PASSWORD | docker login -u $DOCKER_USERNAME --password-stdin || echo "Docker 로그인 건너뜀"
-                    docker push ${params.DOCKER_REGISTRY}/$IMAGE_NAME:$BUILD_NUMBER || echo "Docker 이미지 푸시 건너뜀"
-                    docker push ${params.DOCKER_REGISTRY}/$IMAGE_NAME:latest || echo "Docker 이미지 푸시 건너뜀"
+                    docker push ${DOCKER_REGISTRY}/${IMAGE_NAME}:${BUILD_NUMBER} || echo "Docker 이미지 푸시 건너뜀"
+                    docker push ${DOCKER_REGISTRY}/${IMAGE_NAME}:latest || echo "Docker 이미지 푸시 건너뜀"
                     '''
                 }
             }
@@ -72,8 +73,8 @@ pipeline {
             steps {
                 withCredentials([file(credentialsId: 'kubernetes-config', variable: 'KUBECONFIG')]) {
                     sh '''
-                    sed -i "s|\\${DOCKER_REGISTRY}|${params.DOCKER_REGISTRY}|g" kubernetes/deployment.yaml || echo "배포 파일 수정 건너뜀"
-                    sed -i "s|\\${VERSION}|$BUILD_NUMBER|g" kubernetes/deployment.yaml || echo "배포 파일 수정 건너뜀"
+                    sed -i "s|\\${DOCKER_REGISTRY}|${DOCKER_REGISTRY}|g" kubernetes/deployment.yaml || echo "배포 파일 수정 건너뜀"
+                    sed -i "s|\\${VERSION}|${BUILD_NUMBER}|g" kubernetes/deployment.yaml || echo "배포 파일 수정 건너뜀"
                     kubectl apply -f kubernetes/deployment.yaml -n $K8S_NAMESPACE || echo "Kubernetes 배포 건너뜀"
                     kubectl apply -f kubernetes/service.yaml -n $K8S_NAMESPACE || echo "Kubernetes 서비스 배포 건너뜀"
                     kubectl rollout status deployment/fintech-frontend -n $K8S_NAMESPACE || echo "배포 상태 확인 건너뜀"
