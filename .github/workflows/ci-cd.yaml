@@ -2,9 +2,9 @@ name: CI/CD Pipeline
 
 on:
   push:
-    branches: [ main, develop ]
+    branches: [ test ]
   pull_request:
-    branches: [ main, develop ]
+    branches: [ test ]
 
 jobs:
   build-and-test:
@@ -39,7 +39,7 @@ jobs:
 
   trigger-jenkins:
     needs: build-and-test
-    if: github.event_name == 'push' && (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/develop')
+    if: github.event_name == 'test'
     runs-on: ubuntu-latest
     
     steps:
