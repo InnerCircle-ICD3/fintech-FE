@@ -19,16 +19,18 @@ metadata:
   name: fintech-frontend-ingress
   annotations:
     kubernetes.io/ingress.class: "nginx"
-    nginx.ingress.kubernetes.io/ssl-redirect: "true"
+    # SSL 리다이렉트 비활성화 (SSL 연결이 아직 설정되지 않음)
+    nginx.ingress.kubernetes.io/ssl-redirect: "false"
     nginx.ingress.kubernetes.io/proxy-body-size: "10m"
-    cert-manager.io/cluster-issuer: "letsencrypt-prod"
+    # cert-manager.io/cluster-issuer: "letsencrypt-prod"
 spec:
-  tls:
-  - hosts:
-    - fintech-frontend.example.com
-    secretName: fintech-frontend-tls
+  # SSL 연결이 준비되면 아래 TLS 설정 주석 해제
+  # tls:
+  # - hosts:
+  #   - test.passion-pay.com
+  #   secretName: fintech-frontend-tls
   rules:
-  - host: fintech-frontend.example.com
+  - host: test.passion-pay.com
     http:
       paths:
       - path: /

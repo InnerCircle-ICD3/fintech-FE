@@ -36,7 +36,7 @@ spec:
     }
     
     environment {
-        DOCKER_REGISTRY = 'your-registry.example.com'
+        DOCKER_REGISTRY = '572498579443.dkr.ecr.ap-northeast-2.amazonaws.com'
         IMAGE_NAME = 'fintech-frontend'
         K8S_NAMESPACE = 'fintech-frontend'
     }
