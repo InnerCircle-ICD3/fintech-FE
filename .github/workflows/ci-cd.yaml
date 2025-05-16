@@ -47,7 +47,7 @@ jobs:
     steps:
     - name: Trigger Jenkins job
       run: |
-        # Jenkins CSRF 방지 토큰 가져오기
+        # Jenkins CSRF 방지 토큰 가져오기 #
         CRUMB=$(curl -s "${{ secrets.JENKINS_URL }}/crumbIssuer/api/xml?xpath=concat(//crumbRequestField,\":\",//crumb)" -u "${{ secrets.JENKINS_USER }}:${{ secrets.JENKINS_TOKEN }}" || echo ":")
         
         # Jenkins 작업 트리거 - POST 양식(form) 방식 사용
