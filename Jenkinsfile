@@ -3,7 +3,7 @@ pipeline {
     
     // 파이프라인 파라미터 정의
     parameters {
-        string(name: 'DOCKER_REGISTRY', defaultValue: 'nullplusnull', description: 'Docker 레지스트리 이름')
+        string(name: 'DOCKER_REGISTRY', defaultValue: '', description: 'Docker 레지스트리 이름')
     }
     
     environment {
@@ -15,6 +15,16 @@ pipeline {
         stage('Checkout') {
             steps {
                 checkout scm
+            }
+        }
+        
+        stage('Validate Parameters') {
+            steps {
+                script {
+                    if (params.DOCKER_REGISTRY == '') {
+                        error "DOCKER_REGISTRY 파라미터가 설정되지 않았습니다. 'Build with Parameters'를 사용하여 값을 입력해주세요."
+                    }
+                }
             }
         }
         
