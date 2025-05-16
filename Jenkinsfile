@@ -2,7 +2,7 @@ pipeline {
     agent any
     
     environment {
-        DOCKER_REGISTRY = '572498579443.dkr.ecr.ap-northeast-2.amazonaws.com'
+        DOCKER_REGISTRY = credentials('docker-registry-name')
         IMAGE_NAME = 'fintech-frontend'
         K8S_NAMESPACE = 'fintech-frontend'
     }
@@ -45,7 +45,7 @@ pipeline {
             steps {
                 withCredentials([usernamePassword(credentialsId: 'docker-registry-credentials', usernameVariable: 'DOCKER_USERNAME', passwordVariable: 'DOCKER_PASSWORD')]) {
                     sh '''
-                    aws ecr get-login-password --region ap-northeast-2 | docker login --username AWS --password-stdin $DOCKER_REGISTRY || echo "Docker 로그인 건너뜀"
+                    echo $DOCKER_PASSWORD | docker login -u $DOCKER_USERNAME --password-stdin || echo "Docker 로그인 건너뜀"
                     docker push $DOCKER_REGISTRY/$IMAGE_NAME:$BUILD_NUMBER || echo "Docker 이미지 푸시 건너뜀"
                     docker push $DOCKER_REGISTRY/$IMAGE_NAME:latest || echo "Docker 이미지 푸시 건너뜀"
                     '''
