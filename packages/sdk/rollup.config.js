@@ -1,5 +1,7 @@
 import { defineConfig } from "rollup";
 import typescript from "@rollup/plugin-typescript";
+import resolve from "@rollup/plugin-node-resolve";
+import commonjs from "@rollup/plugin-commonjs";
 
 export default defineConfig({
   input: "src/index.ts",
@@ -8,16 +10,16 @@ export default defineConfig({
     format: "umd",
     name: "PaymentSDK",
     exports: "default",
-    globals: {
-      qrcode: "QRCode",
-    },
   },
   plugins: [
+    resolve({
+      browser: true,
+    }),
+    commonjs(),
     typescript({
       declaration: true,
       declarationDir: "./dist/types",
       rootDir: "./src",
     }),
   ],
-  external: ["qrcode"],
 });
