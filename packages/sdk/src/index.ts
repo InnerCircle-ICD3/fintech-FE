@@ -1,10 +1,39 @@
 import { loader } from "./loader";
-import { doPayment, isInitialized } from "./core";
+import { requestPayment } from "./requestPayment";
+import type { PassionPaySDKInstance } from "./types";
 
-const PaymentSDK = {
-  loader,
-  doPayment,
-  isInitialized,
-};
+async function PassionPaySDK(
+  clientKey: string
+): Promise<PassionPaySDKInstance | null> {
+  if (!clientKey) {
+    throw new Error("[PassionPaySDK] clientKey is required");
+  }
 
-export default PaymentSDK;
+  try {
+    // Validate SDK key
+    const isValid = await loader(clientKey);
+
+    if (!isValid) {
+      throw new Error("[PassionPaySDK] Invalid SDK key");
+    }
+
+    // Return SDK instance only if validation succeeds
+    return {
+      requestPayment,
+    };
+  } catch (error) {
+    console.error("[PassionPaySDK] Initialization failed:", error);
+    return null;
+  }
+}
+
+// Register global object for CDN usage
+if (typeof window !== "undefined") {
+  Object.defineProperty(window, "PassionPaySDK", {
+    value: PassionPaySDK,
+    writable: false,
+    configurable: false,
+  });
+}
+
+export default PassionPaySDK;

@@ -3,7 +3,7 @@
   "private": true,
   "version": "0.0.0",
   "scripts": {
-    "demo": "pnpm --filter demo run dev",
-    "sdk": "pnpm --filter sdk run dev"
+    "demo": "pnpm --filter demo run",
+    "sdk": "pnpm --filter sdk run"
   }
 }
