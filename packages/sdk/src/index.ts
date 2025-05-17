@@ -1,3 +1,4 @@
+import checkBrowserCompatibility from "./checkBrowserCompatibility";
 import { loader } from "./loader";
 import { requestPayment } from "./requestPayment";
 import type { PassionPaySDKInstance } from "./types";
@@ -10,14 +11,18 @@ async function PassionPaySDK(
   }
 
   try {
-    // Validate SDK key
-    const isValid = await loader(clientKey);
+    if (!checkBrowserCompatibility()) {
+      throw new Error(
+        "[PassionPaySDK] Unsupported browser environment. Requires Chrome 84+, Firefox 79+, Safari 14+, or Edge 84+"
+      );
+    }
 
-    if (!isValid) {
+    const isValidSdkKey = await loader(clientKey);
+
+    if (!isValidSdkKey) {
       throw new Error("[PassionPaySDK] Invalid SDK key");
     }
 
-    // Return SDK instance only if validation succeeds
     return {
       requestPayment,
     };
