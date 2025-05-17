@@ -28,7 +28,7 @@ async function PassionPaySDK(
 }
 
 // Register global object for CDN usage
-if (typeof window !== "undefined") {
+if (typeof window !== "undefined" && !(window as any).PassionPaySDK) {
   Object.defineProperty(window, "PassionPaySDK", {
     value: PassionPaySDK,
     writable: false,
