@@ -1,46 +1,76 @@
-export interface ModalStyles {
+interface ModalStyles {
+  overlay: string;
   modal: string;
+  header: string;
+  closeButton: string;
+  title: string;
   content: string;
-  button: string;
   qrImage: string;
   guide: string;
 }
 
 export const styles: ModalStyles = {
-  modal: `
+  overlay: `
     position: fixed;
     top: 0;
     left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.5);
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.6);
     display: flex;
     justify-content: center;
     align-items: center;
-    z-index: 9999;
+    z-index: 1000;
+  `,
+  modal: `
+    background: white;
+    border-radius: 12px;
+    width: 400px;
+    max-width: 90%;
+    position: relative;
+    padding: 0;
+  `,
+  header: `
+    padding: 20px 16px 20px 24px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  `,
+  closeButton: `
+    background: none;
+    border: none;
+    font-size: 24px;
+    cursor: pointer;
+    padding: 0;
+    color: #333;
+    width: 24px;
+    height: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  `,
+  title: `
+    font-size: 18px;
+    font-weight: 600;
+    color: #333;
+    margin: 0;
   `,
   content: `
-    background-color: white;
-    padding: 20px;
-    border-radius: 8px;
-    text-align: center;
-    max-width: 90%;
-    max-height: 90%;
-  `,
-  button: `
-    margin-top: 15px;
-    padding: 8px 16px;
-    background-color: #007bff;
-    color: white;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
+    padding: 32px 24px;
+    padding-top: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
   `,
   qrImage: `
-    max-width: 200px;
-    margin-bottom: 15px;
+    width: 200px;
+    height: 200px;
+    margin-bottom: 16px;
   `,
   guide: `
-    margin-bottom: 15px;
+    margin: 0;
+    color: #666;
+    font-size: 14px;
+    text-align: center;
   `,
 };
