@@ -1,0 +1,43 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: fintech-frontend
+  labels:
+    app: fintech-frontend
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: fintech-frontend
+  template:
+    metadata:
+      labels:
+        app: fintech-frontend
+    spec:
+      containers:
+      - name: fintech-frontend
+        image: ${DOCKER_REGISTRY}/fintech-frontend:${VERSION}
+        ports:
+        - containerPort: 80
+        resources:
+          requests:
+            cpu: "100m"
+            memory: "128Mi"
+          limits:
+            cpu: "300m"
+            memory: "256Mi"
+        readinessProbe:
+          httpGet:
+            path: /
+            port: 80
+          initialDelaySeconds: 10
+          periodSeconds: 5
+        livenessProbe:
+          httpGet:
+            path: /
+            port: 80
+          initialDelaySeconds: 20
+          periodSeconds: 15
+        env:
+        - name: NODE_ENV
+          value: "production" 
