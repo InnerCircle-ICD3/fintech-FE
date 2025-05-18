@@ -21,10 +21,11 @@ pipeline {
         stage('Validate Parameters') {
             steps {
                 script {
-                    if (params.DOCKER_REGISTRY == '') {
-                        error "DOCKER_REGISTRY 파라미터가 설정되지 않았습니다. 'Build with Parameters'를 사용하여 값을 입력해주세요."
+                    if (params.DOCKER_REGISTRY == null) {
+                        env.DOCKER_REGISTRY = 'nullplusnull'
+                    } else {
+                        env.DOCKER_REGISTRY = params.DOCKER_REGISTRY
                     }
-                    env.DOCKER_REGISTRY = params.DOCKER_REGISTRY
                 }
             }
         }
