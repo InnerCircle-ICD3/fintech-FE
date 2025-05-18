@@ -52,7 +52,7 @@ jobs:
         echo "CRUMB 가져오기 시도: $CRUMB"
         
         # Jenkins API 토큰 유효성 테스트
-        echo "Jenkins API 테스트 중..."
+        echo "Jenkins API 테스트 중.. ."
         curl -v -u "${{ secrets.JENKINS_USER }}:${{ secrets.JENKINS_TOKEN }}" "${{ secrets.JENKINS_URL }}/api/json"
         
         # Jenkins 작업 트리거 - POST 양식(form) 방식 사용
