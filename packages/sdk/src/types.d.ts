@@ -1,3 +1,4 @@
+// TODO : SDK 타입 npm 패키지로 내보내기
 interface PaymentRequestBody {
   amount: number;
   merchant_order_id: string;
@@ -14,5 +15,3 @@ declare global {
   ) => Promise<PassionPaySDKInstance | null>;
   type PassionPaySDKInstance = PassionPaySDKInstance;
 }
-
-export {};

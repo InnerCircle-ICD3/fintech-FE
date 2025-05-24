@@ -1,8 +1,11 @@
 import { useEffect, useState } from "react";
+import type { PassionPaySDKInstance } from "./type/global";
 
 function App() {
   const sdkKey = "test_client_key_123";
-  const [passionPay, setPassionPay] = useState<PassionPaySDKInstance>(null);
+  const [passionPay, setPassionPay] = useState<PassionPaySDKInstance | null>(
+    null
+  );
 
   const amount = 39800;
   const merchantOrderId = `order_${Date.now()}`;

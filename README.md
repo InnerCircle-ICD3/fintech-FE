@@ -36,6 +36,10 @@
 
 - pnpm workspace를 사용한 모노레포로 구성되어 있어요.
 - 최초 실행 시 pnpm 설치부터 진행해주세요.
+- 아래 명령어는 'fintech-FE-sdk 루트'에서 실행해주시면 됩니다.
+- 로컬에서 개발할 때
+  1. sdk를 빌드 후 serve로 띄워놓고
+  2. 새로운 터미널에서 demo를 실행해주세요
 
 ```bash
 # 의존성 설치
@@ -54,5 +58,5 @@ pnpm run demo
 ```
 packages/
   ├── sdk/          # SDK
-  └── sdk-demo/     # SDK 사용 예제
+  └── demo/     # SDK 사용 예제
 ```
