@@ -7,6 +7,9 @@ interface ModalStyles {
   content: string;
   qrImage: string;
   guide: string;
+  expireText : string;
+  expiredOverlay : string;
+  expiredMessage : string;
 }
 
 export const styles: ModalStyles = {
@@ -73,4 +76,27 @@ export const styles: ModalStyles = {
     font-size: 14px;
     text-align: center;
   `,
+  expireText: `
+    margin-top: 12px;
+    font-size: 14px;
+    text-align: center;
+  `,
+  expiredOverlay: `
+    background-color: rgba(100, 100, 100, 0.8);
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+  `,
+  expiredMessage: `
+    color: white;
+    font-size: 18px;
+    font-weight: bold;
+    text-align: center;
+  `
 };
