@@ -4,7 +4,7 @@ export async function getTransactionToken(
   reqBody: PaymentReqBody
 ): Promise<PaymentResData> {
   const response = await fetch(
-    `https://passion-pay-api.com/transactions/initiate`,
+    `http://3.39.111.97:8081/payment/request`,
     {
       method: "POST",
       headers: {

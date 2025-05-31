@@ -2,14 +2,14 @@ import { useEffect, useState } from "react";
 import type { PassionPaySDKInstance } from "./type/global";
 
 function App() {
-  const sdkKey = "test_client_key_123";
+  const sdkKey = "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxNyIsIm1lcmNoYW50TmFtZSI6Iu2MqOyKpO2KuOyXheuNsOydtO2KuOyDge2YuOuqhSIsImlhdCI6MTc0NzkzOTY1OCwiZXhwIjoxNzQ4MDI2MDU4fQ.EUHGOzCngzkfNNjGxk1l9hLksvhvV0o6GPwnlqOb56c";
   const [passionPay, setPassionPay] = useState<PassionPaySDKInstance | null>(
     null
   );
 
   const amount = 39800;
   const merchantOrderId = `order_${Date.now()}`;
-  const merchantId = "test_merchant";
+  const merchantId = "merchant01";
 
   const formatPrice = (price: number) => {
     return price.toLocaleString("ko-KR");
