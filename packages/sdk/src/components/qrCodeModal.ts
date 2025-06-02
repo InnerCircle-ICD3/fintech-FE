@@ -1,5 +1,11 @@
 import { styles } from "./styles";
 
+interface ShowQRCodeProps {
+  qrCodeUrl: string;
+  productName?: string;
+  price?: number;
+}
+
 interface CreateModalElements {
   onClose: () => void;
 }
@@ -15,33 +21,28 @@ function createModalElements({ onClose }: CreateModalElements) {
   const header = document.createElement("div");
   header.style.cssText = styles.header;
 
-  const title = document.createElement("h2");
-  title.textContent = "열정페이";
-  title.style.cssText = styles.title;
-
   const closeButton = document.createElement("button");
   closeButton.innerHTML = "×";
   closeButton.style.cssText = styles.closeButton;
   closeButton.onclick = onClose;
 
-  header.appendChild(title);
   header.appendChild(closeButton);
+  modalContent.appendChild(header);
 
-  // Content
   const content = document.createElement("div");
   content.style.cssText = styles.content;
 
-  modalContent.appendChild(header);
   modalContent.appendChild(content);
   modal.appendChild(modalContent);
 
   return { modal, content };
 }
 
-export function showQRCode(qrCodeUrl: string): void {
-  // TODO : 임시로 설정한 expireDate 원래는 QR 데이터 받아오는 API 에서 같이 받아와서 계산해야함!
-  const expireDate = new Date(Date.now() + 60 * 1000)
+export function showQRCode({ qrCodeUrl }: ShowQRCodeProps): void {
 
+  const productName = '[2PACK] 싱글 에어그램 반팔 티셔츠';
+  const price = 39800;
+  const expireDate = new Date(Date.now() + 60 * 1000);
 
   const cleanup = () => {
     if (modal.parentNode) {
@@ -52,53 +53,75 @@ export function showQRCode(qrCodeUrl: string): void {
 
   const { modal, content } = createModalElements({ onClose: cleanup });
 
-  // QR 이미지
-  const qrImage = document.createElement("img");
-  qrImage.src = qrCodeUrl;
-  qrImage.style.cssText = styles.qrImage;
+  // 로고
+  const logoBox = document.createElement("div");
+  logoBox.style.cssText = styles.logoBox;
+  content.appendChild(logoBox);
 
-  // 안내 문구
+  // 제품 정보
+  const productInfoBox = document.createElement("div");
+  productInfoBox.style.cssText = styles.productInfoBox;
+
+  const productNameText = document.createElement("p");
+  productNameText.textContent = productName;
+  productNameText.style.cssText = styles.productName;
+
+  const priceText = document.createElement("p");
+  priceText.textContent = `${price.toLocaleString('ko-KR')}원`;
+  priceText.style.cssText = styles.priceText;
+
+  productInfoBox.appendChild(productNameText);
+  productInfoBox.appendChild(priceText);
+  content.appendChild(productInfoBox);
+
+  // QR 안내 및 타이머
+  const qrWrapper = document.createElement("div");
+  qrWrapper.style.cssText = styles.qrWrapper;
+
   const guide = document.createElement("p");
   guide.textContent = "열정페이 앱으로 QR코드를 스캔하여 결제를 진행해주세요.";
   guide.style.cssText = styles.guide;
 
-  // 유효기간 표시
+  const qrImage = document.createElement("img");
+  qrImage.src = qrCodeUrl;
+  qrImage.style.cssText = styles.qrImage;
+
   const expireText = document.createElement("p");
   expireText.style.cssText = styles.expireText;
+
+  qrWrapper.appendChild(guide);
+  qrWrapper.appendChild(qrImage);
+  qrWrapper.appendChild(expireText);
+  content.appendChild(qrWrapper);
+
+  document.body.appendChild(modal);
 
   const updateRemainingTime = () => {
     const now = new Date();
     const seconds = Math.max(0, Math.floor((expireDate.getTime() - now.getTime()) / 1000));
-    expireText.textContent = `유효기간: ${seconds} 초`;
+    expireText.textContent = `유효시간 ${seconds}초`;
     return seconds;
   };
 
-  content.appendChild(qrImage);
-  content.appendChild(guide);
-  content.appendChild(expireText);
-
-  document.body.appendChild(modal);
-
-  // 타이머 시작
+  // 타이머
   let timerId = setInterval(() => {
     const remaining = updateRemainingTime();
 
     if (remaining <= 0) {
       clearInterval(timerId);
-
-      // 만료 처리
       modal.style.cssText = styles.expiredOverlay;
 
-      content.innerHTML = ""; // 기존 내용 제거
+      qrImage.src = ""; // 기존 QR 제거
+      qrImage.style.display = "none";
 
-      const expiredText = document.createElement("p");
-      expiredText.textContent = "만료되었습니다. 다시 시도해주세요.";
-      expiredText.style.cssText = styles.expiredMessage;
+      const expiredImg = document.createElement("div");
+      expiredImg.style.cssText = styles.expiredQRPlaceholder;
+      qrWrapper.insertBefore(expiredImg, expireText);
 
-      content.appendChild(expiredText);
+      guide.textContent = "결제 유효시간이 만료되었습니다.";
+      expireText.textContent = "";
     }
   }, 1000);
 
-  // 최초 표시
   updateRemainingTime();
 }
