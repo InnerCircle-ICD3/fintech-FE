@@ -36,9 +36,6 @@ export const styles = {
     gap: 16px;
   `,
   logoBox: `
-    width: 120px;
-    height: 32px;
-    background-color: #EEE;
     align-self: center;
   `,
   productInfoBox: `
@@ -94,5 +91,16 @@ export const styles = {
     height: 200px;
     background-color: #555;
     border-radius: 8px;
-  `
+  `,
+  logoImage: `
+  width: 80px;
+  height: auto;
+  object-fit: contain;
+`,
+  expiredImage: `
+  width: 200px;
+  height: 200px;
+  object-fit: cover;
+  border-radius: 8px;
+`,
 };

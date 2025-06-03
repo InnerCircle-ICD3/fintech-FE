@@ -1,4 +1,5 @@
 import { styles } from "./styles";
+import {expiredImageBase64, logoIconBase64} from "../assets/imageBase64";
 
 interface ShowQRCodeProps {
   qrCodeUrl: string;
@@ -54,8 +55,16 @@ export function showQRCode({ qrCodeUrl }: ShowQRCodeProps): void {
   const { modal, content } = createModalElements({ onClose: cleanup });
 
   // 로고
+  // ✅ SVG 로고
   const logoBox = document.createElement("div");
   logoBox.style.cssText = styles.logoBox;
+
+  const logoImage = document.createElement("img");
+  logoImage.src = logoIconBase64;
+  logoImage.alt = "로고";
+  logoImage.style.cssText = styles.logoImage;
+
+  logoBox.appendChild(logoImage);
   content.appendChild(logoBox);
 
   // 제품 정보
@@ -114,12 +123,15 @@ export function showQRCode({ qrCodeUrl }: ShowQRCodeProps): void {
       qrImage.src = ""; // 기존 QR 제거
       qrImage.style.display = "none";
 
-      const expiredImg = document.createElement("div");
-      expiredImg.style.cssText = styles.expiredQRPlaceholder;
-      qrWrapper.insertBefore(expiredImg, expireText);
+      const expiredImage = document.createElement("img");
+      expiredImage.src = expiredImageBase64; // 실제 이미지 경로로 대체
+      expiredImage.alt = "만료된 결제";
+      expiredImage.style.cssText = styles.expiredImage;
+
+      qrWrapper.insertBefore(expiredImage, expireText);
 
       guide.textContent = "결제 유효시간이 만료되었습니다.";
-      expireText.textContent = "";
+      expireText.textContent = "다시 시도해주세요.";
     }
   }, 1000);
 
