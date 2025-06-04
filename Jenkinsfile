@@ -3,7 +3,7 @@ pipeline {
     
     // 파이프라인 파라미터 정의
     parameters {
-        string(name: 'DOCKER_REGISTRY', defaultValue: '', description: 'Docker 레지스트리 이름')
+        string(name: 'DOCKER_REGISTRY', defaultValue: 'nullplusnull', description: 'Docker 레지스트리 이름')
         string(name: 'BRANCH_NAME', defaultValue: '', description: '배포할 브랜치 이름')
     }
     
