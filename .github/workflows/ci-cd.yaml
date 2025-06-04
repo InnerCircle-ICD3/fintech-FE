@@ -25,13 +25,24 @@ jobs:
         cache: 'pnpm'
     
     - name: Install dependencies
-      run: pnpm install --no-frozen-lockfile
+      run: |
+        echo "=== 의존성 설치 시작 ==="
+        echo "현재 브랜치: ${{ github.ref_name }}"
+        echo "커밋 SHA: ${{ github.sha }}"
+        pnpm install --no-frozen-lockfile
+        echo "=== 의존성 설치 완료 ==="
     
     - name: Run tests
-      run: pnpm --filter demo run test || echo "테스트 건너뜀"
+      run: |
+        echo "=== 테스트 실행 시작 ==="
+        pnpm --filter demo run test || echo "테스트 건너뜀"
+        echo "=== 테스트 실행 완료 ==="
     
     - name: Build
-      run: pnpm --filter demo run build || echo "빌드 건너뜀"
+      run: |
+        echo "=== 빌드 실행 시작 ==="
+        pnpm --filter demo run build || echo "빌드 건너뜀"
+        echo "=== 빌드 실행 완료 ==="
     
     - name: Upload build artifacts
       uses: actions/upload-artifact@v4
@@ -47,13 +58,33 @@ jobs:
     steps:
     - name: Trigger Jenkins job
       run: |
+        echo "=== Jenkins 작업 트리거 시작 ==="
+        echo "이벤트 타입: ${{ github.event_name }}"
+        echo "브랜치 ref: ${{ github.ref }}"
+        echo "브랜치 이름: ${{ github.ref_name }}"
+        echo "커밋 SHA: ${{ github.sha }}"
+        echo "Jenkins URL: ${{ secrets.JENKINS_URL }}"
+        echo "Jenkins Job 이름: ${{ secrets.JENKINS_JOB_NAME }}"
+        echo "Jenkins 사용자: ${{ secrets.JENKINS_USER }}"
+        
         # Jenkins CSRF 방지 토큰 가져오기 #
+        echo "=== CSRF 토큰 가져오기 시작 ==="
         CRUMB=$(curl -s "${{ secrets.JENKINS_URL }}/crumbIssuer/api/xml?xpath=concat(//crumbRequestField,\":\",//crumb)" -u "${{ secrets.JENKINS_USER }}:${{ secrets.JENKINS_TOKEN }}" || echo ":")
+        echo "CRUMB 값: $CRUMB"
+        echo "=== CSRF 토큰 가져오기 완료 ==="
         
         # Jenkins 작업 트리거 - POST 양식(form) 방식 사용
+        echo "=== Jenkins POST 요청 시작 ==="
+        echo "전달할 파라미터:"
+        echo "  BRANCH_NAME: ${{ github.ref_name }}"
+        echo "  COMMIT_SHA: ${{ github.sha }}"
+        echo "요청 URL: ${{ secrets.JENKINS_URL }}/job/${{ secrets.JENKINS_JOB_NAME }}/buildWithParameters?token=${{ secrets.JENKINS_API_TOKEN }}"
+        
         curl -X POST \
           -u "${{ secrets.JENKINS_USER }}:${{ secrets.JENKINS_TOKEN }}" \
           -H "$CRUMB" \
           -d "BRANCH_NAME=${{ github.ref_name }}" \
           -d "COMMIT_SHA=${{ github.sha }}" \
           "${{ secrets.JENKINS_URL }}/job/${{ secrets.JENKINS_JOB_NAME }}/buildWithParameters?token=${{ secrets.JENKINS_API_TOKEN }}" 
+        
+        echo "=== Jenkins 작업 트리거 완료 ===" 
