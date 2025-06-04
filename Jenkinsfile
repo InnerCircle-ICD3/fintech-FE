@@ -22,10 +22,19 @@ pipeline {
         stage('Validate Parameters') {
             steps {
                 script {
-                    if (params.DOCKER_REGISTRY == '') {
-                        error "DOCKER_REGISTRY 파라미터가 설정되지 않았습니다. 'Build with Parameters'를 사용하여 값을 입력해주세요."
+                    echo "=== 파라미터 검증 시작 ==="
+                    echo "DOCKER_REGISTRY 파라미터 값: '${params.DOCKER_REGISTRY}'"
+                    echo "DOCKER_REGISTRY 파라미터 타입: ${params.DOCKER_REGISTRY?.getClass()}"
+                    echo "BRANCH_NAME 파라미터 값: '${params.BRANCH_NAME}'"
+                    
+                    if (!params.DOCKER_REGISTRY || params.DOCKER_REGISTRY.trim() == '') {
+                        echo "DOCKER_REGISTRY가 비어있음. 기본값 'nullplusnull' 사용"
+                        env.DOCKER_REGISTRY = 'nullplusnull'
+                    } else {
+                        env.DOCKER_REGISTRY = params.DOCKER_REGISTRY
                     }
-                    env.DOCKER_REGISTRY = params.DOCKER_REGISTRY
+                    echo "최종 DOCKER_REGISTRY 값: ${env.DOCKER_REGISTRY}"
+                    echo "=== 파라미터 검증 완료 ==="
                 }
             }
         }
