@@ -11,6 +11,12 @@ interface CreateModalElements {
   onClose: () => void;
 }
 
+/**
+ * 닫기 콜백이 포함된 모달 오버레이와 콘텐츠 컨테이너 요소를 생성합니다.
+ *
+ * @param onClose - 닫기 버튼 클릭 시 호출되는 함수입니다.
+ * @returns 모달 오버레이 요소와 콘텐츠 컨테이너 요소를 포함하는 객체를 반환합니다.
+ */
 function createModalElements({ onClose }: CreateModalElements) {
   const modal = document.createElement("div");
   modal.style.cssText = styles.overlay;
@@ -39,6 +45,14 @@ function createModalElements({ onClose }: CreateModalElements) {
   return { modal, content };
 }
 
+/**
+ * 결제용 QR 코드와 상품 정보를 포함한 모달을 표시합니다.
+ *
+ * QR 코드, 상품명, 가격, 남은 유효시간을 안내하는 모달을 화면에 띄우며, 60초 후 만료 시 만료 안내로 전환됩니다.
+ *
+ * @param qrCodeUrl - 결제용 QR 코드 이미지의 URL.
+ * @remark 상품명과 가격은 현재 고정되어 있으며, 유효시간이 만료되면 QR 코드가 숨겨지고 만료 이미지를 표시합니다.
+ */
 export function showQRCode({ qrCodeUrl }: ShowQRCodeProps): void {
 
   const productName = '[2PACK] 싱글 에어그램 반팔 티셔츠';
