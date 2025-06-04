@@ -8,7 +8,7 @@ pipeline {
     
     environment {
         IMAGE_NAME = 'fintech-frontend'
-        K8S_NAMESPACE = 'fintech-frontend'
+        K8S_NAMESPACE = 'fintech'
     }
     
     stages {
