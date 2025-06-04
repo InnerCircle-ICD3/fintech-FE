@@ -30,7 +30,10 @@ spec:
   #   - test.passion-pay.com
   #   secretName: fintech-frontend-tls
   rules:
-  - host: test.passion-pay.com
+  # 도메인은 Jenkins에서 브랜치별로 동적 치환됩니다:
+  # - main 브랜치: passion-pay.com
+  # - test/develop 브랜치: test.passion-pay.com
+  - host: ${DEPLOY_DOMAIN}
     http:
       paths:
       - path: /

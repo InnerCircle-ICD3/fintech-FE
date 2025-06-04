@@ -86,6 +86,12 @@ kubectl get pods -n fintech-frontend
 
 Jenkins를 사용하여 CI/CD 파이프라인을 설정할 수 있습니다.
 
+### 브랜치별 배포 환경
+- **main 브랜치**: `passion-pay.com` (프로덕션 환경, `fintech-prod` 네임스페이스)
+- **develop 브랜치**: `test.passion-pay.com` (개발 환경, `fintech` 네임스페이스)
+- **test 브랜치**: `test.passion-pay.com` (테스트 환경, `fintech` 네임스페이스)
+
+### 설정 방법
 1. Jenkins 서버에 접속하여 새 파이프라인 작업을 생성합니다.
 2. 파이프라인 정의에서 "Pipeline script from SCM"을 선택합니다.
 3. SCM에서 Git을 선택하고 저장소 URL을 입력합니다.
@@ -94,6 +100,10 @@ Jenkins를 사용하여 CI/CD 파이프라인을 설정할 수 있습니다.
 6. 필요한 인증 정보를 추가합니다:
    - Docker 레지스트리 인증 정보 (ID: docker-registry-credentials)
    - Kubernetes 구성 파일 (ID: kubernetes-config)
+
+### 빌드 파라미터
+- `DOCKER_REGISTRY`: Docker 레지스트리 이름 (필수)
+- `BRANCH_NAME`: 배포할 브랜치 이름 (GitHub Actions에서 자동 전달)
 
 ## GitHub 연동
 
