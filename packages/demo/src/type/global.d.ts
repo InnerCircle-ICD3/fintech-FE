@@ -8,6 +8,7 @@ interface PaymentRequestBody {
   amount: number;
   merchant_order_id: string;
   merchant_id: string;
+  productName : string;
 }
 
 export interface PassionPaySDKInstance {

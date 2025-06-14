@@ -3,8 +3,8 @@ import {expiredImageBase64, logoIconBase64} from "../assets/imageBase64";
 
 interface ShowQRCodeProps {
   qrCodeUrl: string;
-  productName?: string;
-  price?: number;
+  amount : number;
+  productName : string;
 }
 
 interface CreateModalElements {
@@ -51,12 +51,13 @@ function createModalElements({ onClose }: CreateModalElements) {
  * QR 코드, 상품명, 가격, 남은 유효시간을 안내하는 모달을 화면에 띄우며, 60초 후 만료 시 만료 안내로 전환됩니다.
  *
  * @param qrCodeUrl - 결제용 QR 코드 이미지의 URL.
+ * @param amount
+ * @param productName
  * @remark 상품명과 가격은 현재 고정되어 있으며, 유효시간이 만료되면 QR 코드가 숨겨지고 만료 이미지를 표시합니다.
  */
-export function showQRCode({ qrCodeUrl }: ShowQRCodeProps): void {
+export function showQRCode({ qrCodeUrl, amount , productName }: ShowQRCodeProps): void {
 
-  const productName = '[2PACK] 싱글 에어그램 반팔 티셔츠';
-  const price = 39800;
+  const price = amount;
   const expireDate = new Date(Date.now() + 60 * 1000);
 
   const cleanup = () => {
@@ -90,7 +91,7 @@ export function showQRCode({ qrCodeUrl }: ShowQRCodeProps): void {
   productNameText.style.cssText = styles.productName;
 
   const priceText = document.createElement("p");
-  priceText.textContent = `${price.toLocaleString('ko-KR')}원`;
+  priceText.textContent = `${price.toLocaleString()}원`;
   priceText.style.cssText = styles.priceText;
 
   productInfoBox.appendChild(productNameText);

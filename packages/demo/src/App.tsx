@@ -10,6 +10,7 @@ function App() {
   const amount = 39800;
   const merchantOrderId = `order_${Date.now()}`;
   const merchantId = "merchant01";
+  const productName = '[2PACK] 싱글 에어그램 반팔 티셔츠';
 
   const formatPrice = (price: number) => {
     return price.toLocaleString("ko-KR");
@@ -23,6 +24,7 @@ function App() {
         amount,
         merchant_order_id: merchantOrderId,
         merchant_id: merchantId,
+        productName
       });
     } catch (error) {
       console.error("Payment failed:", error);
